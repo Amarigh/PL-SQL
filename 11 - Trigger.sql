@@ -14,3 +14,12 @@ CREATE [OR REPLACE] TRIGGER trigger_name
 BEGIN 
   -- PL/SQL statements 
 END;
+
+
+CREATE OR REPLACE TRIGGER delete_customer
+AFTER DELETE ON customers
+FOR EACH ROW
+BEGIN
+    INSERT INTO customers_deleted (customer_id, name, address, date_deleted)
+    VALUES (:OLD.customer_id, :OLD.name, :OLD.address, SYSDATE);
+END;
